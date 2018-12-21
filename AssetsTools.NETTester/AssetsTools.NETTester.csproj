@@ -100,7 +100,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AssetTools.NET\AssetsTools.NET.csproj">
+    <ProjectReference Include="..\AssetsTools.NET\AssetsTools.NET.csproj">
       <Project>{E09D5AC2-1A2E-4EC1-94AD-3F5E22F17658}</Project>
       <Name>AssetsTools.NET</Name>
     </ProjectReference>
