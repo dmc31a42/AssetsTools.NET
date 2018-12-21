@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssetsTools.NET", "AssetsTools.NET\AssetsTools.NET.csproj", "{E09D5AC2-1A2E-4EC1-94AD-3F5E22F17658}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AssetsTools.NET", "AssetsTools.NET\AssetsTools.NET.csproj", "{E09D5AC2-1A2E-4EC1-94AD-3F5E22F17658}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssetsTools.NETTester", "AssetsTools.NETTester\AssetsTools.NETTester.csproj", "{4BB78D5F-C4C0-4B3F-B1F3-DE0D677D3ACE}"
 EndProject
@@ -19,12 +19,12 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{E09D5AC2-1A2E-4EC1-94AD-3F5E22F17658}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E09D5AC2-1A2E-4EC1-94AD-3F5E22F17658}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E09D5AC2-1A2E-4EC1-94AD-3F5E22F17658}.Debug|x64.ActiveCfg = Debug|x64
-		{E09D5AC2-1A2E-4EC1-94AD-3F5E22F17658}.Debug|x64.Build.0 = Debug|x64
+		{E09D5AC2-1A2E-4EC1-94AD-3F5E22F17658}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{E09D5AC2-1A2E-4EC1-94AD-3F5E22F17658}.Debug|x64.Build.0 = Debug|Any CPU
 		{E09D5AC2-1A2E-4EC1-94AD-3F5E22F17658}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E09D5AC2-1A2E-4EC1-94AD-3F5E22F17658}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E09D5AC2-1A2E-4EC1-94AD-3F5E22F17658}.Release|x64.ActiveCfg = Release|x64
-		{E09D5AC2-1A2E-4EC1-94AD-3F5E22F17658}.Release|x64.Build.0 = Release|x64
+		{E09D5AC2-1A2E-4EC1-94AD-3F5E22F17658}.Release|x64.ActiveCfg = Release|Any CPU
+		{E09D5AC2-1A2E-4EC1-94AD-3F5E22F17658}.Release|x64.Build.0 = Release|Any CPU
 		{4BB78D5F-C4C0-4B3F-B1F3-DE0D677D3ACE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4BB78D5F-C4C0-4B3F-B1F3-DE0D677D3ACE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4BB78D5F-C4C0-4B3F-B1F3-DE0D677D3ACE}.Debug|x64.ActiveCfg = Debug|x64
@@ -44,5 +44,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {61841471-DED3-4E89-8917-31F4481BE57B}
 	EndGlobalSection
 EndGlobal
