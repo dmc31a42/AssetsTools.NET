@@ -2,6 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>NakWonCHOI</Authors>
+    <Company>nakwonelec</Company>
+    <Description>This is forked from https://github.com/nesrak1/AssetsTools.NET and ported from https://github.com/DerPopo/UABE .
+The license can be changed according to original AssetsTools.NET package.</Description>
+    <RepositoryUrl>https://github.com/dmc31a42/AssetsTools.NET</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
   </PropertyGroup>
 
   <ItemGroup>
