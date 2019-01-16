@@ -2,7 +2,6 @@
 
 using AssetsTools.NET;
 using AssetsTools.NET.Extra;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,11 +14,11 @@ namespace UABE.NET.Winforms
     public partial class AssetData : Form
     {
         AssetsFile af;
-        AssetsManager am;
+        AssetsManagerLegacy am;
         AssetDetails assetDetails;
         AssetTypeInstance mainAti;
         string rootDir;
-        public AssetData(AssetsFile af, AssetsManager am, AssetDetails assetDetails, string rootDir)
+        public AssetData(AssetsFile af, AssetsManagerLegacy am, AssetDetails assetDetails, string rootDir)
         {
             InitializeComponent();
             this.af = af;
@@ -28,7 +27,7 @@ namespace UABE.NET.Winforms
             this.rootDir = rootDir;
             PopulateTree();
         }
-
+        
         private void PopulateTree()
         {
             ClassDatabaseType cldt = AssetHelper.FindAssetClassByID(am.initialClassFile, assetDetails.type);
