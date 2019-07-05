@@ -10,13 +10,15 @@ namespace AssetsTools.NET.Extra
     public class AssetsManager
     {
         public bool updateAfterLoad = true;
+        public bool useTemplateFieldCache = false;
         public ClassDatabaseFile classFile;
         public List<AssetsFileInstance> files = new List<AssetsFileInstance>();
+        private Dictionary<uint, AssetTypeTemplateField> templateFieldCache = new Dictionary<uint, AssetTypeTemplateField>();
 
         public AssetsFileInstance LoadAssetsFile(Stream stream, string path, bool loadDeps, string root = "")
         {
             AssetsFileInstance instance;
-            int index = files.FindIndex(f => f.path == Path.GetFullPath(path));
+            int index = files.FindIndex(f => f.path.ToLower() == Path.GetFullPath(path).ToLower());
             if (index == -1)
             {
                 instance = new AssetsFileInstance(stream, path, root);
@@ -36,7 +38,7 @@ namespace AssetsTools.NET.Extra
         public AssetsFileInstance LoadAssetsFile(FileStream stream, bool loadDeps, string root = "")
         {
             AssetsFileInstance instance;
-            int index = files.FindIndex(f => f.path == Path.GetFullPath(stream.Name));
+            int index = files.FindIndex(f => f.path.ToLower() == Path.GetFullPath(stream.Name).ToLower());
             if (index == -1)
             {
                 instance = new AssetsFileInstance(stream, root);
@@ -67,7 +69,7 @@ namespace AssetsTools.NET.Extra
                 for (int j = 0; j < file.file.dependencies.dependencyCount; j++)
                 {
                     AssetsFileDependency dep = file.file.dependencies.pDependencies[j];
-                    if (dep.assetPath == ofFile.name)
+                    if (Path.GetFileName(dep.assetPath.ToLower()) == Path.GetFileName(ofFile.path.ToLower()))
                     {
                         file.dependencies[j] = ofFile;
                     }
@@ -86,7 +88,7 @@ namespace AssetsTools.NET.Extra
                     for (int j = 0; j < file.file.dependencies.dependencyCount; j++)
                     {
                         AssetsFileDependency dep = file.file.dependencies.pDependencies[j];
-                        if (dep.assetPath == ofFile.name)
+                        if (Path.GetFileName(dep.assetPath.ToLower()) == Path.GetFileName(ofFile.path.ToLower()))
                         {
                             file.dependencies[j] = ofFile;
                         }
@@ -101,7 +103,7 @@ namespace AssetsTools.NET.Extra
             for (int i = 0; i < ofFile.dependencies.Count; i++)
             {
                 string depPath = ofFile.file.dependencies.pDependencies[i].assetPath;
-                if (files.FindIndex(f => Path.GetFileName(f.path) == Path.GetFileName(depPath)) == -1)
+                if (files.FindIndex(f => Path.GetFileName(f.path).ToLower() == Path.GetFileName(depPath).ToLower()) == -1)
                 {
                     string absPath = Path.Combine(path, depPath);
                     string localAbsPath = Path.Combine(path, Path.GetFileName(depPath));
@@ -128,6 +130,7 @@ namespace AssetsTools.NET.Extra
             {
                 ext.info = null;
                 ext.instance = null;
+                ext.file = null;
             }
             else if (atvf.Get("m_FileID").GetValue().AsInt() != 0)
             {
@@ -137,6 +140,7 @@ namespace AssetsTools.NET.Extra
                     ext.instance = GetATI(dep.file, ext.info);
                 else
                     ext.instance = null;
+                ext.file = dep;
             }
             else
             {
@@ -145,6 +149,7 @@ namespace AssetsTools.NET.Extra
                     ext.instance = GetATI(relativeTo.file, ext.info);
                 else
                     ext.instance = null;
+                ext.file = relativeTo;
             }
             return ext;
         }
@@ -154,8 +159,36 @@ namespace AssetsTools.NET.Extra
             //do we still need pooling?
             //(it accumulates memory over time and we don't
             // really need to read the same ati twice)
-            AssetTypeTemplateField pBaseField = new AssetTypeTemplateField();
-            pBaseField.FromClassDatabase(classFile, AssetHelper.FindAssetClassByID(classFile, info.curFileType), 0);
+
+            //unity is wack
+            uint fixedId = info.curFileType;
+            if (fixedId == 0xf1) //AudioMixerController
+                fixedId = 0xf0;  //AudioMixer
+            else if (fixedId == 0xf3) //AudioMixerGroupController
+                fixedId = 0x111;      //AudioMixerGroup
+            else if (fixedId == 0xf5) //AudioMixerSnapshotController
+                fixedId = 0x110;      //AudioMixerSnapshot
+
+            AssetTypeTemplateField pBaseField = null;
+            if (useTemplateFieldCache)
+            {
+                if (templateFieldCache.ContainsKey(fixedId))
+                {
+                    pBaseField = templateFieldCache[fixedId];
+                }
+                else
+                {
+                    pBaseField = new AssetTypeTemplateField();
+                    pBaseField.FromClassDatabase(classFile, AssetHelper.FindAssetClassByID(classFile, fixedId), 0);
+                    templateFieldCache[fixedId] = pBaseField;
+                }
+            }
+            else
+            {
+                pBaseField = new AssetTypeTemplateField();
+                pBaseField.FromClassDatabase(classFile, AssetHelper.FindAssetClassByID(classFile, fixedId), 0);
+            }
+
             return new AssetTypeInstance(pBaseField, file.reader, false, info.absoluteFilePos);
         }
 
@@ -197,6 +230,7 @@ namespace AssetsTools.NET.Extra
         {
             public AssetFileInfoEx info;
             public AssetTypeInstance instance;
+            public AssetsFileInstance file;
         }
     }
 }
