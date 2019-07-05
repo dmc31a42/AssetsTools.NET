@@ -31,16 +31,29 @@ namespace AssetsTools.NET
             typeTree.Read(reader.Position, reader, header.format, reader.bigEndian);
             
             AssetCount = reader.ReadUInt32();
-            reader.Align();
+            if(header.format == 15)
+            {
+                reader.Position += 3;
+            } else
+            {
+                reader.Align();
+            }
             AssetTablePos = Convert.ToUInt32(reader.BaseStream.Position);
             
             reader.BaseStream.Position += AssetFileInfo.GetSize(header.format) * AssetCount;
+            if(header.format == 15)
+            {
+                reader.BaseStream.Position -= 3;
+            }
             if (header.format > 0x0B)
             {
                 preloadTable = new PreloadList();
                 preloadTable.Read(reader.Position, reader, header.format, reader.bigEndian);
             }
-            
+            if(header.format == 15)
+            {
+                reader.Align();
+            }
             dependencies = new AssetsFileDependencyList();
             dependencies.Read(reader.Position, reader, header.format, reader.bigEndian);
         }
